@@ -102,4 +102,3 @@ All of the source code is in `src` directory. It contains two main sub directori
    - EventBridge
      - [For calculating the total bytes of a single event](src/lib/eventBridge/calculateEntrySizeFor.ts)
      - [For creating an entry from a single DynamoDB stream record](src/lib/eventBridge/createEntryFrom.ts)
-- 
