@@ -70,11 +70,16 @@ export class MainStack extends sst.Stack {
             ///////////////////////////////////////////////////////////
             const eventBus = new sst.EventBus(this, 'DonationsBus', {
                   rules: {
-                        catchAll: {
-                              description: 'Catches all events',
-                              ruleName: 'catch-all',
+                        newDonation: {
+                              description: 'Matches donation creation events',
+                              ruleName: 'newDonation',
                               targets: [queue],
-                              eventPattern: { account: [this.account] }
+                              eventPattern: {
+                                    account: [this.account],
+                                    detail: ['INSERT DONATION'],
+                                    source: [`dynamodb.${table.tableName}`],
+                                    resources: [table.tableArn]
+                              }
                         }
                   }
             })

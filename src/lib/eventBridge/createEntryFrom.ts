@@ -26,7 +26,7 @@ export function createEntryFrom(record: DynamoDBRecord): PutEventsRequestEntry {
             Time: approximateCreationDateTime,
             Source: 'dynamodb.' + tableName,
             Resources: [tableArn],
-            DetailType: 'INSERT',
+            DetailType: 'INSERT DONATION',
             Detail: JSON.stringify({
                   eventID,
                   awsRegion,
