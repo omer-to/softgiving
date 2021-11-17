@@ -6,12 +6,10 @@ export default function main(app: sst.App): void {
       if (app.stage.includes('dev') || app.stage.includes('test')) {
             app.setDefaultRemovalPolicy(RemovalPolicy.DESTROY)
       }
-      // Set default runtime for all functions
+
       app.setDefaultFunctionProps({
             runtime: "nodejs14.x"
       });
 
-      new MainStack(app, "main-stack");
-
-      // Add more stacks
+      new MainStack(app, "main");
 }
