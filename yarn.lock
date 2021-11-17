@@ -3304,6 +3304,36 @@
     semver "^7.3.5"
     tar "^6.1.11"
 
+"@middy/core@^2.5.3":
+  version "2.5.3"
+  resolved "https://registry.yarnpkg.com/@middy/core/-/core-2.5.3.tgz#312c8efe82f97976d5831ae1628e8fbb1b04afaa"
+  integrity sha512-hCXlRglDu48sl03IjDGjcJwfwElIPAf0fwBu08kqE80qpnouZ1hGH1lZbkbJjAhz6DkSR+79YArUQKUYaM2k1g==
+
+"@middy/http-event-normalizer@^2.5.3":
+  version "2.5.3"
+  resolved "https://registry.yarnpkg.com/@middy/http-event-normalizer/-/http-event-normalizer-2.5.3.tgz#5a1c95772396fcc914745e4becaebfca8a6fd2d6"
+  integrity sha512-dycuYvwglyLaP3tdb7Fbk1jFV/chp1QfWqzthwqexoS44QqXzXi66yudTvDPsgu5vZ8/GLq4qjHNkce6iNfYPw==
+
+"@middy/http-json-body-parser@^2.5.3":
+  version "2.5.3"
+  resolved "https://registry.yarnpkg.com/@middy/http-json-body-parser/-/http-json-body-parser-2.5.3.tgz#7ffa8134c7f4141c00fd53503a69cd815d211a97"
+  integrity sha512-8vUW40srhgwkgup9HTGv0lUOUUbTcK8XPrS0zjL3jC0Ew3AgU1FbpfyipTxgcaWr+cZlgmq1VvXY1G60R+7dyQ==
+  dependencies:
+    "@middy/util" "^2.5.3"
+
+"@middy/http-response-serializer@^2.5.3":
+  version "2.5.3"
+  resolved "https://registry.yarnpkg.com/@middy/http-response-serializer/-/http-response-serializer-2.5.3.tgz#c715bee676560aed0f71c5f7cf95967c5d0eb161"
+  integrity sha512-TNi9VTZ6J5MA4cuj8QJr1EmmP+g/yfaTklz19kgteE1SbWTlxHLQCPTBuSMr38g8cs6ii+lEYR+o2jPvmvX2Zg==
+  dependencies:
+    "@hapi/accept" "5.0.2"
+    "@middy/util" "^2.5.3"
+
+"@middy/util@^2.5.3":
+  version "2.5.3"
+  resolved "https://registry.yarnpkg.com/@middy/util/-/util-2.5.3.tgz#d1987b43e4129d9ad614b409039f8aae2d115ff9"
+  integrity sha512-tKB4Nw1tFYyt7A6OdY5ohuh/73+/uQQVv6dw+31uqdHZ4UNzqeIN+scT3QAC8Rqky6M8PrREJ+MrkqREykE/Tg==
+
 "@napi-rs/triples@^1.0.3":
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/@napi-rs/triples/-/triples-1.0.3.tgz#76d6d0c3f4d16013c61e45dfca5ff1e6c31ae53c"
