@@ -1,6 +1,6 @@
 @testBaseUrl = TODO
-@prodBaseUrl = TODO
-@baseUrl = {{testBaseUrl}}
+@prodBaseUrl = https://fqgu8rbpjk.execute-api.eu-central-1.amazonaws.com
+@baseUrl = {{prodBaseUrl}}
 
 
 
@@ -27,7 +27,7 @@ Content-Type: application/json
 #####################################
 ### Get Donation by transactionId ###
 #####################################
-@transactionId = de4e9e3f-c7c7-478e-b24c-c262e45b1346
+@transactionId = 1d916d54-ccb1-4fe5-8673-6fc169ddfa3c
 GET {{baseUrl}}/donations/{{transactionId}} HTTP/1.1
 
 
