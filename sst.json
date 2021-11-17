@@ -1,5 +1,6 @@
 {
       "name": "softgiving",
       "region": "eu-central-1",
-      "main": "stacks/index.ts"
+      "main": "stacks/index.ts",
+      "lint": false
 }
