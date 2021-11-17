@@ -3,6 +3,7 @@
       "version": "0.1.0",
       "private": true,
       "scripts": {
+            "dev": "tsnd --respawn --transpile-only",
             "test": "sst test",
             "start": "sst start --stage dev",
             "build": "sst build",
@@ -28,12 +29,14 @@
             "@aws-sdk/client-eventbridge": "^3.41.0",
             "@aws-sdk/util-dynamodb": "^3.41.0",
             "@middy/core": "^2.5.3",
+            "@middy/http-error-handler": "^2.5.3",
             "@middy/http-event-normalizer": "^2.5.3",
             "@middy/http-json-body-parser": "^2.5.3",
             "@middy/http-response-serializer": "^2.5.3",
             "@middy/http-security-headers": "^2.5.3",
             "@serverless-stack/cli": "0.52.0",
             "@serverless-stack/resources": "0.52.0",
+            "http-status-codes": "^2.1.4",
             "pino": "^7.2.0",
             "uuid": "^8.3.2",
             "zod": "^3.11.6"
