@@ -19,7 +19,7 @@ const defaultOptions: Options = {
       useHttpResponseSerializer: true
 }
 
-export const middyfy = (handler: APIGatewayProxyHandlerV2, options: Options) => {
+export const middyfy = (handler: APIGatewayProxyHandlerV2, options?: Options) => {
       options = { ...defaultOptions, ...options }
       const { useHttpEventNormalizer, useHttpJsonBodyParser, useHttpResponseSerializer } = options
       const middlewares: middy.MiddlewareObj[] = []
