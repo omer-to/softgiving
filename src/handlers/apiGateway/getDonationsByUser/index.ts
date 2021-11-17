@@ -25,7 +25,7 @@ export const handler: APIGatewayProxyHandlerV2 = async (evt) => {
 
             return {
                   statusCode: 200,
-                  body: { donations }
+                  body: donations
             }
 
       } catch (error) {
