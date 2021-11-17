@@ -2,6 +2,7 @@ import { v4 as uuid } from 'uuid'
 import { APIGatewayProxyHandlerV2 } from 'aws-lambda'
 
 import { createDonation } from '../../../lib/dynamoDB/createDonation'
+import { middyfy } from '../../../lib/apiGateway/middyfy'
 
 type RequestBody = {
       /** The email of the donor, the unique identifier among all users */
@@ -10,17 +11,17 @@ type RequestBody = {
       amount: number
 }
 
-export const main: APIGatewayProxyHandlerV2 = async (evt) => {
-      evt.body = evt.body || '{}'
-
-      const { email, amount } = JSON.parse(evt.body) as RequestBody
+// @ts-expect-error
+const handler: APIGatewayProxyHandlerV2 = async (evt) => {
+      const { email, amount } = evt.body as unknown as RequestBody
       const transactionId = uuid()
-      const result = await createDonation(transactionId, email, amount)
 
-      const responseBody = result
+      await createDonation(transactionId, email, amount)
 
       return {
             statusCode: 201,
-            body: JSON.stringify({ responseBody, transactionId })
+            body: { transactionId }
       }
 }
+
+export const main = middyfy(handler, { useHttpEventNormalizer: false })
