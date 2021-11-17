@@ -1,0 +1,51 @@
+@testBaseUrl = TODO
+@prodBaseUrl = TODO
+@baseUrl = {{testBaseUrl}}
+
+
+
+
+
+#####################################
+### Create a donation ###
+#####################################
+@emailOne = "john@icloud.com"
+@emailTwo = "mary@icloud.com"
+@invalidEmail = "invalidEmail"
+POST {{baseUrl}}/donations HTTP/1.1
+Content-Type: application/json
+
+{
+      "email": {{emailTwo}},
+      "amount": 10
+}
+
+
+
+
+
+#####################################
+### Get Donation by transactionId ###
+#####################################
+@transactionId = de4e9e3f-c7c7-478e-b24c-c262e45b1346
+GET {{baseUrl}}/donations/{{transactionId}} HTTP/1.1
+
+
+
+
+
+#####################################
+### Get User by email ###
+#####################################
+@maryEmail = mary@icloud.com
+@johnEmail = john@icloud.com
+GET {{baseUrl}}/user/{{johnEmail}} HTTP/1.1
+
+
+
+
+
+#####################################
+### Get all donations by user ###
+#####################################
+GET {{baseUrl}}/user/donations/{{maryEmail}} HTTP/1.1
