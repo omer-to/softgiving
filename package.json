@@ -5,9 +5,11 @@
       "scripts": {
             "dev": "tsnd --respawn --transpile-only",
             "test": "sst test",
-            "start": "sst start --stage dev",
+            "start:dev": "sst start --stage dev",
+            "start:prod": "sst start --stage prod",
             "build": "sst build",
-            "deploy": "sst deploy",
+            "deploy:dev": "sst deploy --stage dev",
+            "deploy:prod": "sst deploy --stage prod",
             "remove": "sst remove"
       },
       "eslintConfig": {
