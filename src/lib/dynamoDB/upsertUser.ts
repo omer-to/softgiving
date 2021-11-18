@@ -2,6 +2,7 @@ import { UpdateItemCommand } from '@aws-sdk/client-dynamodb'
 import type { UpdateItemCommandInput } from '@aws-sdk/client-dynamodb'
 
 import { ddbClient, tableName } from './ddbClient';
+import { handlePrefixUSR } from './handlePrefix';
 
 /**
  * @description Creates a new user if it is the first time he/she makes a donation, otherwise updates the `amount` field, internally uses @see UpdateItemCommand
@@ -14,7 +15,7 @@ export function upsertUser(email: string, amount: number) {
             TableName: tableName,
             Key: {
                   pk: {
-                        S: `USR#${email}`
+                        S: handlePrefixUSR.addPrefixTo(email)
                   },
                   sk: {
                         S: 'PROFILE'

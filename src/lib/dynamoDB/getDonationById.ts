@@ -1,6 +1,7 @@
 import { QueryCommand, QueryCommandInput } from '@aws-sdk/client-dynamodb'
 
 import { ddbClient, tableName } from './ddbClient'
+import { handlePrefixDON } from './handlePrefix'
 
 /**
  * @description Gets a single donation item, internally uses @see GetItemCommand
@@ -8,6 +9,7 @@ import { ddbClient, tableName } from './ddbClient'
  * @param transactionId The unique identifier for the donation
  */
 export function getDonationById(transactionId: string) {
+
       const commandInput: QueryCommandInput = {
             TableName: tableName,
             KeyConditionExpression: '#pk = :pk',
@@ -16,7 +18,7 @@ export function getDonationById(transactionId: string) {
             },
             ExpressionAttributeValues: {
                   ':pk': {
-                        S: `DON#${transactionId}`
+                        S: handlePrefixDON.addPrefixTo(transactionId)
                   }
             }
       }

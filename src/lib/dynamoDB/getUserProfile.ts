@@ -1,6 +1,7 @@
 import { GetItemCommand, GetItemCommandInput } from '@aws-sdk/client-dynamodb'
 
 import { ddbClient, tableName } from './ddbClient'
+import { handlePrefixUSR } from './handlePrefix'
 
 /**
  * @description Gets the user profile item, internally uses @see GetItemCommand
@@ -12,7 +13,7 @@ export function getUserProfile(email: string) {
             TableName: tableName,
             Key: {
                   pk: {
-                        S: `USR#${email}`
+                        S: handlePrefixUSR.addPrefixTo(email)
                   },
                   sk: {
                         S: 'PROFILE'

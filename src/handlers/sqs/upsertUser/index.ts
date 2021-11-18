@@ -3,6 +3,7 @@ import type { UpdateItemCommandOutput } from '@aws-sdk/client-dynamodb'
 
 import { logger } from '../../../lib/logger'
 import { upsertUser } from '../../../lib/dynamoDB/upsertUser'
+import { handlePrefixUSR } from 'lib/dynamoDB/handlePrefix'
 
 
 type EventDetail = {
@@ -32,7 +33,7 @@ export const main: SQSHandler = async (evt, ctx, cb) => {
                   sk, /** `USR#<email>` */
                   amount
             } = newImage
-            const email = sk.substring(4)
+            const email = handlePrefixUSR.removePrefixFrom(sk)
             return upsertUser(email, amount)
       })
 

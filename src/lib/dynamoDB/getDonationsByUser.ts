@@ -1,5 +1,6 @@
 import { QueryCommand, QueryCommandInput } from '@aws-sdk/client-dynamodb'
 import { ddbClient, tableName } from './ddbClient'
+import { handlePrefixUSR } from './handlePrefix'
 
 const gsi1 = 'GSI1'
 
@@ -9,6 +10,7 @@ const gsi1 = 'GSI1'
  * @param email The email of the user, unique identifier among all other users
  */
 export function getDonationsByUser(email: string) {
+
       const commandInput: QueryCommandInput = {
             TableName: tableName,
             IndexName: gsi1,
@@ -18,7 +20,7 @@ export function getDonationsByUser(email: string) {
             },
             ExpressionAttributeValues: {
                   ':email': {
-                        S: 'USR#' + email
+                        S: handlePrefixUSR.addPrefixTo(email)
                   }
             }
       }
