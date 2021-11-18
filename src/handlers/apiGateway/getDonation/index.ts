@@ -11,7 +11,6 @@ type PathParameters = {
 // @ts-expect-error
 export const handler: APIGatewayProxyHandlerV2 = async (evt) => {
       const { transactionId } = evt.pathParameters as PathParameters
-      console.log('RUNINININININININNI')
       try {
             const donation = await getDonationById(transactionId)
             if (donation.Items) {
@@ -20,12 +19,10 @@ export const handler: APIGatewayProxyHandlerV2 = async (evt) => {
                         statusCode: 200,
                         body: unmarshall(item)
                   }
-
             }
 
             return { statusCode: 404, body: `Donation ${transactionId} does not exist` }
       } catch (error) {
-            console.error('errror ocured')
             console.error({ error })
       }
 
