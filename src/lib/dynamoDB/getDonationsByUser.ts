@@ -12,7 +12,15 @@ export function getDonationsByUser(email: string) {
       const commandInput: QueryCommandInput = {
             TableName: tableName,
             IndexName: gsi1,
-            KeyConditionExpression: `pk = USR#${email}`
+            KeyConditionExpression: '#sk = :email',
+            ExpressionAttributeNames: {
+                  '#sk': 'sk'
+            },
+            ExpressionAttributeValues: {
+                  ':email': {
+                        S: 'USR#' + email
+                  }
+            }
       }
       const command = new QueryCommand(commandInput)
       return ddbClient.send(command)
