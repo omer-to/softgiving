@@ -1,5 +1,6 @@
 import { unmarshall } from '@aws-sdk/util-dynamodb'
 import { APIGatewayProxyHandlerV2 } from 'aws-lambda'
+import { handlePrefixUSR } from 'lib/dynamoDB/handlePrefix'
 import { middyfy } from '../../../lib/apiGateway/middyfy'
 
 import { getUserProfile } from '../../../lib/dynamoDB/getUserProfile'
@@ -13,10 +14,14 @@ export const handler: APIGatewayProxyHandlerV2 = async (evt) => {
       const userProfile = await getUserProfile(email)
 
       if (userProfile.Item) {
-            const { amount } = unmarshall(userProfile.Item)
+            const { amount, pk } = unmarshall(userProfile.Item)
+
             return {
                   statusCode: 200,
-                  body: { amount }
+                  body: {
+                        amount,
+                        email: handlePrefixUSR.removePrefixFrom(pk)
+                  }
             }
       }
       return {
