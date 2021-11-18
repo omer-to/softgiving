@@ -2,6 +2,7 @@ import middy from '@middy/core'
 import middyHttpEventNormalizer from '@middy/http-event-normalizer'
 import middyHttpJsonBodyParser from '@middy/http-json-body-parser'
 import middyHttpResponseSerializer from '@middy/http-response-serializer'
+import middyHttpSecurityHeaders from '@middy/http-security-headers'
 import type { APIGatewayProxyHandlerV2 } from 'aws-lambda'
 
 
@@ -36,6 +37,7 @@ export const middyfy = (handler: APIGatewayProxyHandlerV2, options?: Options) =>
             ],
             default: 'application/json'
       }))
+      middlewares.push(middyHttpSecurityHeaders())
 
       return middy(handler).use(middlewares)
 }
