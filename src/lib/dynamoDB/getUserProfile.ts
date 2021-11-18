@@ -13,6 +13,9 @@ export function getUserProfile(email: string) {
             Key: {
                   pk: {
                         S: `USR#${email}`
+                  },
+                  sk: {
+                        S: 'PROFILE'
                   }
             }
       }
