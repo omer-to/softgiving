@@ -6,6 +6,7 @@ import { calculateEntrySizeFor } from '../../../lib/eventBridge/calculateEntrySi
 import { createEntryFrom } from '../../../lib/eventBridge/createEntryFrom'
 import { eventBridgeClient } from '../../../lib/eventBridge/eventBridgeClient';
 import { logger } from '../../../lib/logger'
+import { unmarshall } from '@aws-sdk/util-dynamodb'
 
 
 const maxBatchSize = 10,
@@ -23,6 +24,11 @@ export const main: DynamoDBStreamHandler = async (evt, ctx) => {
       const batches = evt.Records.reduce<Batch[]>((batches, record) => {
             /** We only care about the creation of Donation items, since we did not implement update, i.e. `MODIFY` */
             if (record.eventName === 'INSERT') {
+                  // @ts-expect-error
+                  const pk = unmarshall(record!.dynamodb!.Keys!).pk as string
+                  /** Because we don't want to send any stream record other than new donations */
+                  if (!pk.startsWith('DON#')) return batches
+
                   const entry = createEntryFrom(record)
                   const entrySize = calculateEntrySizeFor(entry)
 
@@ -59,7 +65,7 @@ export const main: DynamoDBStreamHandler = async (evt, ctx) => {
        */
       const firstBatch = batches[0]
       if (!firstBatch.totalEntryNum) {
-            console.log('There is no INSERT operation, returning early with nothing to put into EventBus.')
+            console.log('There is no INSERT operation for donation, returning early with nothing to put into EventBus.')
             return
       }
 
