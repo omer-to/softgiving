@@ -1,4 +1,4 @@
-import { GetItemCommand, GetItemCommandInput } from '@aws-sdk/client-dynamodb'
+import { QueryCommand, QueryCommandInput } from '@aws-sdk/client-dynamodb'
 
 import { ddbClient, tableName } from './ddbClient'
 
@@ -8,14 +8,18 @@ import { ddbClient, tableName } from './ddbClient'
  * @param transactionId The unique identifier for the donation
  */
 export function getDonationById(transactionId: string) {
-      const commandInput: GetItemCommandInput = {
+      const commandInput: QueryCommandInput = {
             TableName: tableName,
-            Key: {
-                  pk: {
+            KeyConditionExpression: '#pk = :pk',
+            ExpressionAttributeNames: {
+                  '#pk': 'pk'
+            },
+            ExpressionAttributeValues: {
+                  ':pk': {
                         S: `DON#${transactionId}`
                   }
             }
       }
-      const command = new GetItemCommand(commandInput)
+      const command = new QueryCommand(commandInput)
       return ddbClient.send(command)
 }
