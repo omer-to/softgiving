@@ -1,33 +1,61 @@
-import { SQSHandler } from 'aws-lambda'
-import { UpdateItemCommand, UpdateItemCommandInput } from '@aws-sdk/client-dynamodb'
+import type { SQSHandler, EventBridgeEvent } from 'aws-lambda'
+import type { UpdateItemCommandOutput } from '@aws-sdk/client-dynamodb'
 
-import { ddbClient, tableName } from '../../../lib/dynamoDB/ddbClient'
+import { logger } from '../../../lib/logger'
+import { upsertUser } from '../../../lib/dynamoDB/upsertUser'
 
-/**
- * @description Creates a new user if it is the first time he/she makes a donation, otherwise updates the `amount` field, internally uses @see UpdateItemCommand
- * 
- * @param email The email of the user, unique identifier among all other users
- * @param number The amount of the new donation in cents
- */
-function upsertUser(email: string, amount: number) {
-      const commandInput: UpdateItemCommandInput = {
-            TableName: tableName,
-            Key: {
-                  pk: {
-                        S: `USR#${email}`
-                  },
-                  sk: {
-                        S: 'PROFILE'
-                  }
-            },
-            UpdateExpression: `ADD pk ${amount}`
 
-      }
-      const command = new UpdateItemCommand(commandInput)
-      return ddbClient.send(command)
+type EventDetail = {
+      eventID: string
+      awsRegion: string //TODO: better to represent it as enum
+      keys: {
+            sk: string
+            pk: string
+      },
+      newImage: {
+            amount: number
+            sk: string
+            pk: string
+      },
+      approximateCreationDateTime: string
+      dynamodbStreamSequenceNumber: string
+      dynamodbStreamArn: string
 }
-
+type EventDetailType = 'INSERT DONATION'
 
 export const main: SQSHandler = async (evt, ctx, cb) => {
-      // await upsertUser(email, amount)
+
+      const upsertUserPromises = evt.Records.map(record => {
+            const recordBody = JSON.parse(record.body) as EventBridgeEvent<EventDetailType, EventDetail>
+            const { detail: { newImage } } = recordBody
+            const {
+                  sk, /** `USR#<email>` */
+                  amount
+            } = newImage
+            const email = sk.substring(4)
+            return upsertUser(email, amount)
+      })
+
+      try {
+            const upsertUserOutputs = await Promise.allSettled(upsertUserPromises)
+
+            const successfulExecutions: PromiseSettledResult<UpdateItemCommandOutput>[] = []
+            const failedExecutions: PromiseRejectedResult[] = []
+
+            upsertUserOutputs.forEach(upsertUserOutput => {
+                  if (upsertUserOutput.status === 'fulfilled') successfulExecutions.push(upsertUserOutput)
+                  else failedExecutions.push(upsertUserOutput)
+            })
+
+            // Do something with results
+            logger.info(`${successfulExecutions.length} number of records are successfully processed`)
+            if (failedExecutions.length) {
+                  logger.error(`${failedExecutions.length} number of records are failed to process`)
+                  logger.error(failedExecutions)
+            }
+      } catch (error) {
+            logger.error(error)
+      }
+
 }
+
