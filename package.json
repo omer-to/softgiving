@@ -30,6 +30,7 @@
             "@middy/http-event-normalizer": "^2.5.3",
             "@middy/http-json-body-parser": "^2.5.3",
             "@middy/http-response-serializer": "^2.5.3",
+            "@middy/http-security-headers": "^2.5.3",
             "@serverless-stack/cli": "0.52.0",
             "@serverless-stack/resources": "0.52.0",
             "pino": "^7.2.0",

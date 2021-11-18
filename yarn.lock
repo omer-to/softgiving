@@ -3329,6 +3329,13 @@
     "@hapi/accept" "5.0.2"
     "@middy/util" "^2.5.3"
 
+"@middy/http-security-headers@^2.5.3":
+  version "2.5.3"
+  resolved "https://registry.yarnpkg.com/@middy/http-security-headers/-/http-security-headers-2.5.3.tgz#12d6e8d17801777364da0498b67dad269419bb2c"
+  integrity sha512-DST2jFJZPK07XCMn/GwA15kyVxYD7zC8hjjjrjhFVY9ACX89D7ES9x72NbUOHhQ/1p8/dxlMPVO48nJuzBU8VA==
+  dependencies:
+    "@middy/util" "^2.5.3"
+
 "@middy/util@^2.5.3":
   version "2.5.3"
   resolved "https://registry.yarnpkg.com/@middy/util/-/util-2.5.3.tgz#d1987b43e4129d9ad614b409039f8aae2d115ff9"
