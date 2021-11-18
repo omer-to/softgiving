@@ -3,6 +3,7 @@
       "display": "Node 14",
       "compilerOptions": {
             "allowSyntheticDefaultImports": true,
+            "baseUrl": "src",
             "esModuleInterop": true,
             "forceConsistentCasingInFileNames": true,
             "lib": [
