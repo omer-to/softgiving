@@ -12,6 +12,7 @@
 # typescript
 *.js
 *.d.ts
+!/src/lib/types/*
 
 # misc
 .DS_Store
