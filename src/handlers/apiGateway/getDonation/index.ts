@@ -1,5 +1,6 @@
 import { unmarshall } from '@aws-sdk/util-dynamodb'
 import { APIGatewayProxyHandlerV2 } from 'aws-lambda'
+import { handlePrefixUSR } from 'lib/dynamoDB/handlePrefix'
 
 import { middyfy } from '../../../lib/apiGateway/middyfy'
 import { getDonationById } from '../../../lib/dynamoDB/getDonationById'
@@ -15,9 +16,15 @@ export const handler: APIGatewayProxyHandlerV2 = async (evt) => {
             const donation = await getDonationById(transactionId)
             if (donation.Items) {
                   const item = donation.Items[0] /**it will always return one item at most */
+                  const { /** the email */sk, amount } = unmarshall(item)
+
                   return {
                         statusCode: 200,
-                        body: unmarshall(item)
+                        body: {
+                              amount,
+                              transactionId,
+                              email: handlePrefixUSR.removePrefixFrom(sk),
+                        }
                   }
             }
 
