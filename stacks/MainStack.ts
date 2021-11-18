@@ -1,5 +1,7 @@
 import * as sst from '@serverless-stack/resources'
 import * as ddb from '@aws-cdk/aws-dynamodb'
+import * as events from '@aws-cdk/aws-events'
+import * as cdk from '@aws-cdk/core'
 
 const handlerDir = 'src/handlers'
 export class MainStack extends sst.Stack {
@@ -68,20 +70,26 @@ export class MainStack extends sst.Stack {
             ///////////////////////////////////////////////////////////
             // The EventBus to receieve DDB Streams through Lambda and targets SQS Queue
             ///////////////////////////////////////////////////////////
+            const newDonationEventPattern: events.EventPattern = {
+                  account: [this.account],
+                  detailType: ['INSERT DONATION'],
+                  source: [`dynamodb.${table.tableName}`],
+                  resources: [table.tableArn]
+            }
             const eventBus = new sst.EventBus(this, 'DonationsBus', {
                   rules: {
                         newDonation: {
                               description: 'Matches donation creation events',
                               ruleName: 'newDonation',
                               targets: [queue],
-                              eventPattern: {
-                                    account: [this.account],
-                                    detail: ['INSERT DONATION'],
-                                    source: [`dynamodb.${table.tableName}`],
-                                    resources: [table.tableArn]
-                              }
+                              eventPattern: newDonationEventPattern
                         }
                   }
+            })
+            const archive = eventBus.eventBridgeEventBus.archive('DonationArchive', {
+                  archiveName: 'DonationEventsArchive',
+                  retention: cdk.Duration.days(10),
+                  eventPattern: newDonationEventPattern
             })
 
             ///////////////////////////////////////////////////////////
@@ -154,6 +162,10 @@ export class MainStack extends sst.Stack {
                   EventBusName: {
                         value: eventBus.eventBusName,
                         description: 'The name of the event that receives DDB streams through lambda and targets SQS Queue'
+                  },
+                  EventBridgeArchive: {
+                        value: archive.archiveName,
+                        description: 'The name of the EventBridge Archive that keeps the donation events for 10 days.'
                   },
                   QueueName: {
                         value: queue.sqsQueue.queueName,
